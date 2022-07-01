@@ -1,0 +1,27 @@
+To write junit test use
+@org.junit.Test //it is in junit.frameworks 3.x jar
+
+//To mock a instance variable of a class
+//Example Controller will have Service instance
+//When we test a method in Controller we need to mock the Service instance
+@org.mockito.Mock
+private Service service;
+//and then to inject it in Controller object
+Controller controller = new Controller();
+//it is in the spring-test-x.jar
+org.springframework.test.util.ReflectionTestUtils.setField(controller,"service", service);
+
+//on the mock object when we call a method and we want it to return or throw a specific data we can do it 
+//by two ways
+//first type
+//org.mockito.Mocito.when
+when(service.someMethod(anyObject(),anyString())).thenReturn(anyObject);
+when(service.someMethod(null,null)).thenThrow(new Exception());
+doNothing.when(service).someMehtod(null,null);
+
+//second type //this type can be used for calling static method
+new MockUp<Service>(){
+	public String someMethod(Helper helper, String string) throws Exception{
+		return "test";
+	}
+};
